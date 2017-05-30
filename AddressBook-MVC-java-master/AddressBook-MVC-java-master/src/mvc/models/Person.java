@@ -3,6 +3,7 @@
  * and open the template in the editor.
  */
 package mvc.models;
+
 /**
  *
  * @author Admin
@@ -11,7 +12,8 @@ public class Person {
     private String name;
     private String mob;
     private String email;
-    /* public User(){
+    private String city;
+   /* public User(){
         x=0;
     }
     
@@ -40,11 +42,18 @@ public class Person {
     public String getEmail(){
         return this.email; 
    }
+
+    public String getCity() {
+        return city;
+    }
+
+   
     
-    public void setData(String name, String mob,String email){
+    public void setData(String name, String mob,String email,String city){
         this.name = name;
         this.mob = mob;
         this.email = email;
+        this.city = city;
     }
     
  

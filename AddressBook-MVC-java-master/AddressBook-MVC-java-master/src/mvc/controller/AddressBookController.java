@@ -1,8 +1,6 @@
 
 package mvc.controller;
-
 import mvc.models.Person;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import mvc.models.Person;
@@ -36,23 +34,16 @@ public class AddressBookController {
         daoimplement = new AddressBookDAOImplementation();
         view =new AddressBookMainGUI("View");  
     }
-     
-    
-     
-    
-     
     public void control(){
         loadPersons();
         actionListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource()== view.getAdd())
-                {
-                       
+                {                   
                    view.getMainGUIFrame().disable();
                         openAdd();
-                       view.getMainGUIFrame().enable();
-                     
+                       view.getMainGUIFrame().enable();    
                 }
                 else if(e.getSource()== view.getEdit())
                     openEdit();
@@ -83,11 +74,12 @@ public class AddressBookController {
             String name = contactDetailsPanel.getNameField().getText();
             String mobile = contactDetailsPanel.getMobileField().getText();
             String email = contactDetailsPanel.geteMailField().getText();   
+            String city = contactDetailsPanel.getCityField().getText();
             flag = validate();
             if(flag)
             {    
              Person person = new Person();
-             person.setData(name,mobile,email);
+             person.setData(name,mobile,email,city);
              daoimplement.addPerson(person);
              dialog.getFrame().dispose();
              view.getMainGUIFrame().setVisible(true);
@@ -149,6 +141,7 @@ public class AddressBookController {
             JOptionPane.showMessageDialog(new JFrame(), "Fields Marked as * are Mandatory","Inane error", JOptionPane.ERROR_MESSAGE);
         else 
             valid = true;
+        String city = contactDetailsPanel.getCityField().getText();
         return valid;
                
     }
@@ -159,6 +152,7 @@ public class AddressBookController {
         dialog.getPanel().setName(detailPanel.getNameField().getText());
         dialog.getPanel().setMobile(detailPanel.getMobileField().getText());
         dialog.getPanel().seteMail(detailPanel.geteMailField().getText());
+        dialog.getPanel().setCity(detailPanel.getCityField().getText());
         view.getMainGUIFrame().setVisible(false);
         choiceListener = new ActionListener() {
             @Override
@@ -170,11 +164,12 @@ public class AddressBookController {
                 String name = contactDetailsPanel.getNameField().getText();
                 String mobile = contactDetailsPanel.getMobileField().getText();
                 String email = contactDetailsPanel.geteMailField().getText();   
+                String city = contactDetailsPanel.getCityField().getText();
                 flag = validate();
                 if(flag)
                 {    
                 Person person = new Person();
-                person.setData(name,mobile,email);
+                person.setData(name,mobile,email,city);
                 daoimplement.updatePerson(person,originalName);
                 dialog.getFrame().dispose();
                 view.getMainGUIFrame().setVisible(true);
@@ -210,7 +205,6 @@ public class AddressBookController {
         nlp = view.getNameListPanel();
         daoimplement.getAllNames(nlp);
         nlp.getJList().setSelectedIndex(0);
-       
         if(nlp.getJList().getSelectedValue() != null)
         {  
         String selectedName = nlp.getJList().getSelectedValue().toString();
@@ -223,26 +217,22 @@ public class AddressBookController {
                     public void valueChanged(ListSelectionEvent event) {
                     if (!event.getValueIsAdjusting()){
                     JList source = (JList)event.getSource();
-
                      if(source.getSelectedIndex() == -1)
                          source.setSelectedIndex(0);
                     String select = source.getSelectedValue().toString();
                     getSelectedPerson(select);
-                    
-                    }
+                                        }
                     }
                     });  
          detailPanel.getNameField().setEditable(false);
          detailPanel.getMobileField().setEditable(false);
          detailPanel.geteMailField().setEditable(false);
+         detailPanel.getCityField().setEditable(false);
         }
     }  //loadPersons ends
-    
     public void getSelectedPerson(String selectedName)
     {
         detailPanel=view.getDetailViewPanel();
         daoimplement.getSelectedName(detailPanel,selectedName);
-     
-    }
-  
-}
+       }
+  }
